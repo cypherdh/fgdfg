@@ -758,8 +758,9 @@ function library:CreateWindow(table)
 				return library4	
 			end
 
-			function pagebuttons:CreateBox(name, callback)
+			function pagebuttons:CreateBox(name, icon, callback)
 				name = name or "Input Text Here..."
+				icon = icon or 10045753138
 				callback = callback or function() end
 				local UpdateBox = {}
 				local TextBox = Instance.new("Frame")
@@ -822,7 +823,7 @@ function library:CreateWindow(table)
 				EditIcon.BackgroundTransparency = 1.000
 				EditIcon.Position = UDim2.new(0, 6, 0, 6)
 				EditIcon.Size = UDim2.new(0, 18, 0, 18)
-				EditIcon.Image = "rbxassetid://10045753138"
+				EditIcon.Image = "rbxassetid://"..icon
 				EditIcon.ImageColor3 = Color3.fromRGB(135, 255, 135)
 				function UpdateBox:UpdateBox(name)
 					TextInput.PlaceholderText = name
