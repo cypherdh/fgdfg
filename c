@@ -377,11 +377,15 @@ function library:CreateWindow(table)
 
 			SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
 				for i, v in next, Page:GetChildren() do
-					if v:IsA("Frame") then
-						if string.find(v.Name, SearchBox.Text) then
-							v.Visible = true
+					if v:IsA("Frame") and v.Name:find("TextButton") or v.Name:find("TextLabel") or v.Name:find("CreateSlider") or v.Name:find("TextBox") or v.Name:find("CreateBind") or v.Name:find("CreateToggle") then
+						if SearchBox.Text ~= "" then
+							if string.find(v.Name, SearchBox.Text) then
+								v.Visible = true
+							else
+								v.Visible = false
+							end
 						else
-							v.Visible = false
+							v.Visible = true
 						end
 					end
 				end
@@ -481,7 +485,7 @@ function library:CreateWindow(table)
 				local ButtonText = Instance.new("TextButton")
 				local OutlineShadow = Instance.new("ImageLabel")
 
-				Button.Name = name
+				Button.Name = name.."TextButton"
 				Button.Parent = SectionContainer
 				Button.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
 				Button.BackgroundTransparency = 1.000
@@ -569,7 +573,7 @@ function library:CreateWindow(table)
 				local LabelContent = Instance.new("TextLabel")
 
 
-				Label.Name = name
+				Label.Name = name.."TextLabel"
 				Label.Parent = SectionContainer
 				Label.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
 				Label.BackgroundTransparency = 0.500
@@ -627,7 +631,7 @@ function library:CreateWindow(table)
 				local UICorner_20 = Instance.new("UICorner")
 				local ValueText = Instance.new("TextLabel")
 
-				Slider.Name = name
+				Slider.Name = name.."CreateSlider"
 				Slider.Parent = SectionContainer
 				Slider.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
 				Slider.Size = UDim2.new(1, 0, 0, 40)
@@ -760,7 +764,7 @@ function library:CreateWindow(table)
 				local TextInput = Instance.new("TextBox")
 				local EditIcon = Instance.new("ImageLabel")
 
-				TextBox.Name = "name"
+				TextBox.Name = name.."TextBox"
 				TextBox.Parent = SectionContainer
 				TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				TextBox.BackgroundTransparency = 1.000
@@ -833,7 +837,7 @@ function library:CreateWindow(table)
 				local KButton = Instance.new("TextButton")
 				local UICorner_15 = Instance.new("UICorner")
 
-				Keybind.Name = name
+				Keybind.Name = name.."CreateBind"
 				Keybind.Parent = SectionContainer
 				Keybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Keybind.BackgroundTransparency = 1.000
@@ -929,7 +933,7 @@ function library:CreateWindow(table)
 				local TButton = Instance.new("TextButton")
 				local UICorner_4 = Instance.new("UICorner")
 
-				Toggle.Name = name
+				Toggle.Name = name.."CreateToggle"
 				Toggle.Parent = SectionContainer
 				Toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
 				Toggle.Size = UDim2.new(1, 0, 0, 40)
