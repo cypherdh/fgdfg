@@ -375,17 +375,19 @@ function library:CreateWindow(table)
 			UICorner_8.Parent = SectionContainer
 			--End
 
-			SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-				for i, v in next, Page:GetChildren() do
-					if v:IsA("Frame") and v.Name:find("TextButton") or v.Name:find("TextLabel") or v.Name:find("CreateSlider") or v.Name:find("TextBox") or v.Name:find("CreateBind") or v.Name:find("CreateToggle") then
-						if SearchBox.Text ~= "" then
-							if string.find(v.Name, SearchBox.Text) then
-								v.Visible = true
+			SearchBox.Changed:Connect(function(Changed)
+				if Changed == "Text" then
+					for i, v in next, Page:GetChildren() do
+						if v:IsA("Frame") and v.Name:find("TextButton") or v.Name:find("TextLabel") or v.Name:find("CreateSlider") or v.Name:find("TextBox") or v.Name:find("CreateBind") or v.Name:find("CreateToggle") then
+							if SearchBox.Text ~= "" then
+								if string.find(v.Name, SearchBox.Text) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
 							else
-								v.Visible = false
+								v.Visible = true
 							end
-						else
-							v.Visible = true
 						end
 					end
 				end
