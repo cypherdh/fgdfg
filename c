@@ -375,27 +375,17 @@ function library:CreateWindow(table)
 			UICorner_8.Parent = SectionContainer
 			--End
 
-			function UpdateResults()
-				local search = string.lower(SearchBox.Text)
-				for i, v in pairs(Page:GetDescendants()) do
-					if v:IsA("TextButton") or v:IsA("TextLabel") or v:IsA("TextBox") then
-						if search ~= "" then
-							local item = string.lower(v.Text)
-							if string.find(item, search) then
-								v.Visible = true
-							else
-								v.Visible = false
-								if v.Parent then v.Parent.Visible = false end
-							end
-						else
+			SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+				for i, v in next, Page:GetChildren() do
+					if v:IsA("Frame") then
+						if string.find(v.Name, SearchBox.Text) then
 							v.Visible = true
-							if v.Parent then v.Parent.Visible = true end
+						else
+							v.Visible = false
 						end
 					end
 				end
-			end
-
-			SearchBox.Changed:Connect(UpdateResults)
+			end)
 
 			local size = 0
 			SectionContainer.ChildAdded:Connect(function(me)
@@ -460,9 +450,9 @@ function library:CreateWindow(table)
 				TS:Create(Indicator, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
 				for i, v in next, Tabs:GetChildren() do
 					if v:IsA("TextButton") and v.Name == "PageButton" then
-							TS:Create(v, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
-						end
+						TS:Create(v, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
 					end
+				end
 				wait()
 				TS:Create(PageButton, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 				Indicator.Parent = PageButton
@@ -491,7 +481,7 @@ function library:CreateWindow(table)
 				local ButtonText = Instance.new("TextButton")
 				local OutlineShadow = Instance.new("ImageLabel")
 
-				Button.Name = "Button"
+				Button.Name = name
 				Button.Parent = SectionContainer
 				Button.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
 				Button.BackgroundTransparency = 1.000
@@ -579,7 +569,7 @@ function library:CreateWindow(table)
 				local LabelContent = Instance.new("TextLabel")
 
 
-				Label.Name = "Label"
+				Label.Name = name
 				Label.Parent = SectionContainer
 				Label.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
 				Label.BackgroundTransparency = 0.500
@@ -637,7 +627,7 @@ function library:CreateWindow(table)
 				local UICorner_20 = Instance.new("UICorner")
 				local ValueText = Instance.new("TextLabel")
 
-				Slider.Name = "Slider"
+				Slider.Name = name
 				Slider.Parent = SectionContainer
 				Slider.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
 				Slider.Size = UDim2.new(1, 0, 0, 40)
@@ -770,7 +760,7 @@ function library:CreateWindow(table)
 				local TextInput = Instance.new("TextBox")
 				local EditIcon = Instance.new("ImageLabel")
 
-				TextBox.Name = "TextBox"
+				TextBox.Name = "name"
 				TextBox.Parent = SectionContainer
 				TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				TextBox.BackgroundTransparency = 1.000
@@ -843,7 +833,7 @@ function library:CreateWindow(table)
 				local KButton = Instance.new("TextButton")
 				local UICorner_15 = Instance.new("UICorner")
 
-				Keybind.Name = "Keybind"
+				Keybind.Name = name
 				Keybind.Parent = SectionContainer
 				Keybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Keybind.BackgroundTransparency = 1.000
@@ -939,7 +929,7 @@ function library:CreateWindow(table)
 				local TButton = Instance.new("TextButton")
 				local UICorner_4 = Instance.new("UICorner")
 
-				Toggle.Name = "Toggle"
+				Toggle.Name = name
 				Toggle.Parent = SectionContainer
 				Toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
 				Toggle.Size = UDim2.new(1, 0, 0, 40)
