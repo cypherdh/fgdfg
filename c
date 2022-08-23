@@ -1,16 +1,16 @@
---if (getgenv()["h"] and getgenv()["h"] == true) and (getgenv()["1H2O"] and getgenv()["1H2O"] == math) then else while true do for i = 1, 1/0 do repeat until nil end end;return wait(1/0) end -- Makes sure no one steals the UI
 local library = {}
 
 local UIS = game:GetService("UserInputService")
 local TS = game:GetService("TweenService")
-function library:CreateWindow(table)
+function library:CreateWindow(name, icon)
+	name = name or "MyUiLib"
 	--Creating Ui Window
 	local MyGui = Instance.new("ScreenGui")
 	local Window = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
 	local TitleBar = Instance.new("Frame")
 	local Icon = Instance.new("ImageLabel")
-	local MainTitle = Instance.new("TextLabel")
+	local Title = Instance.new("TextLabel")
 	local TitleUnderline = Instance.new("Frame")
 	local UIGradient = Instance.new("UIGradient")
 	local Bar = Instance.new("Frame")
@@ -18,25 +18,8 @@ function library:CreateWindow(table)
 	local Close = Instance.new("ImageButton")
 	local _4pxShadow2px_2 = Instance.new("ImageLabel")
 
-	local RandomString = ""
-	for i = 1, math.random(3,20) do
-		RandomString = RandomString..string.char(math.random(97,122))
-	end
-
-	MyGui.Name = RandomString
-
-	for i, v in pairs(getconnections(cloneref(game:GetService("CoreGui")).DescendantAdded)) do
-		v:Disable()
-	end
-
-	if identifyexecutor() == "Synapse X" and syn.protect_gui then
-		syn.protect_gui(MyGui)
-		MyGui.Parent = cloneref(game:GetService("CoreGui"))
-	elseif gethui or hiddenUI or get_hidden_gui then
-		MyGui.Parent = gethui() or hiddenUI() or get_hidden_gui()
-	else
-		MyGui.Parent = cloneref(game:GetService("CoreGui"))
-	end
+	MyGui.Name = name
+	MyGui.Parent = game.CoreGui
 	MyGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Window.Name = "Window"
@@ -60,20 +43,20 @@ function library:CreateWindow(table)
 	Icon.BackgroundTransparency = 1.000
 	Icon.Position = UDim2.new(0, 6, 0, 6)
 	Icon.Size = UDim2.new(0, 18, 0, 18)
-	Icon.Image = "rbxassetid://"..table.Icon
+	Icon.Image = "rbxassetid://10044538000"
 	Icon.ImageColor3 = Color3.fromRGB(135, 255, 135)
 
-	MainTitle.Name = "Title"
-	MainTitle.Parent = TitleBar
-	MainTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	MainTitle.BackgroundTransparency = 1.000
-	MainTitle.Position = UDim2.new(0, 30, 0, 1)
-	MainTitle.Size = UDim2.new(1, -30, 1, 0)
-	MainTitle.Font = Enum.Font.Gotham
-	MainTitle.Text = table.Name.." | "..table.Version --"Title | Version"
-	MainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-	MainTitle.TextSize = 12.000
-	MainTitle.TextXAlignment = Enum.TextXAlignment.Left
+	Title.Name = "Title"
+	Title.Parent = TitleBar
+	Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Title.BackgroundTransparency = 1.000
+	Title.Position = UDim2.new(0, 30, 0, 1)
+	Title.Size = UDim2.new(1, -30, 1, 0)
+	Title.Font = Enum.Font.Gotham
+	Title.Text = name --"Title | Version"
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.TextSize = 12.000
+	Title.TextXAlignment = Enum.TextXAlignment.Left
 
 	TitleUnderline.Name = "TitleUnderline"
 	TitleUnderline.Parent = TitleBar
@@ -125,13 +108,13 @@ function library:CreateWindow(table)
 
 
 	Close.MouseButton1Click:Connect(function()
-		local Thing4 = Window.Position
+		local Thing = Window.Position
 		game:GetService("TweenService"):Create(Window, TweenInfo.new(0.5, Enum.EasingStyle.Linear),{
 			Position = UDim2.new(
-				Thing4.X.Scale,
-				Thing4.X.Offset,
-				Thing4.Y.Scale * 5,
-				Thing4.Y.Offset
+				Thing.X.Scale,
+				Thing.X.Offset,
+				Thing.Y.Scale * 5,
+				Thing.Y.Offset
 			)
 		}):Play()
 		wait(1)
@@ -175,7 +158,6 @@ function library:CreateWindow(table)
 	end
 
 	dragify(Window)
-
 	--end
 	local tabs = {}
 
@@ -269,7 +251,6 @@ function library:CreateWindow(table)
 			Page.Size = UDim2.new(1, -155, 1, -41)
 			Page.ScrollBarThickness = 5
 			Page.ScrollBarImageColor3 = Color3.fromRGB(135, 255, 135)
-			Page.AutomaticCanvasSize = "Y"
 			Page.Visible = false
 
 			UICorner_3.CornerRadius = UDim.new(0, 4)
@@ -317,7 +298,7 @@ function library:CreateWindow(table)
 			SearchBox.Size = UDim2.new(1, -40, 1, 0)
 			SearchBox.Font = Enum.Font.Gotham
 			SearchBox.PlaceholderColor3 = Color3.fromRGB(227, 225, 228)
-			SearchBox.PlaceholderText = "Search Here (Coming soon)"
+			SearchBox.PlaceholderText = "Search Here"
 			SearchBox.Text = ""
 			SearchBox.TextColor3 = Color3.fromRGB(227, 225, 228)
 			SearchBox.TextSize = 12.000
@@ -374,28 +355,6 @@ function library:CreateWindow(table)
 			UICorner_8.CornerRadius = UDim.new(0, 4)
 			UICorner_8.Parent = SectionContainer
 			--End
-			
-			function UpdateResults()
-				local search = string.lower(SearchBox.Text)
-				for i, v in pairs(Page:GetDescendants()) do
-					if v:IsA("TextButton") or v:IsA("TextLabel") or v:IsA("TextBox") then
-						if search ~= "" then
-							local item = string.lower(v.Text)
-							if string.find(item, search) then
-								v.Visible = true
-							else
-								v.Visible = false
-								if v.Parent then v.Parent.Visible = false end
-							end
-						else
-							v.Visible = true
-							if v.Parent then v.Parent.Visible = true end
-						end
-					end
-				end
-			end
-
-			SearchBox.Changed:Connect(UpdateResults)
 
 			local size = 0
 			SectionContainer.ChildAdded:Connect(function(me)
@@ -438,6 +397,83 @@ function library:CreateWindow(table)
 				end]]
 			end)
 
+			--resize canv size
+			local function ResizeFrame()                              --Function to resize the frame
+				--tab.CanvasSize = tab.CanvasSize + UDim2.new(0,0,0,44)
+				Page.CanvasSize = UDim2.new(0,0,0,UIListLayout_3.AbsoluteContentSize.Y + 55)
+			end
+
+			game:service"RunService".RenderStepped:connect(function()
+				ResizeFrame() 
+			end)
+			--end
+
+			--SEARCH FUNCTION
+			function UpdateResults()
+				local search = string.lower(SearchBox.Text)
+				for i, v in	 pairs(SectionContainer:GetChildren()) do
+					if v:IsA("Frame") then
+						if search ~= "" then
+							if v.Name == "Button" then
+								local item = string.lower(v.Container.TextButton.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							elseif v.Name == "Label" then
+								local item = string.lower(v.LabelContent.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							elseif v.Name == "Slider" then
+								local item = string.lower(v.Title.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							elseif v.Name == "TextBox" then
+								local item = string.lower(v.Container.TextInput.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							elseif v.Name == "Keybind" then
+								local item = string.lower(v.Container.Title.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							elseif v.Name == "Toggle" then
+								local item = string.lower(v.Title.Text)
+								if string.find(item, search) then
+									v.Visible = true
+								else
+									v.Visible = false
+								end
+							end
+
+							--[[local item = string.lower(v.Text)
+							if string.find(item, search) then
+								v.Visible = true
+							else
+								v.Visible = false
+							end]]
+						else
+							v.Visible = true
+						end
+					end
+				end
+			end
+
+			SearchBox.Changed:Connect(UpdateResults)
+			--END
+
 			local PageButton = Instance.new("TextButton")
 			PageButton.Name = "PageButton"
 			PageButton.Parent = Tabs
@@ -455,9 +491,10 @@ function library:CreateWindow(table)
 				if Indicator.Visible == false then
 					Indicator.Visible = true
 				end
-				TS:Create(Indicator, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+				TS:Create(Indicator, TweenInfo.new(0.1), {BackgroundTransparency = 1}):Play()
 				wait()
 				TS:Create(Indicator, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
+				wait()
 				for i, v in next, Tabs:GetChildren() do
 					if v:IsA("TextButton") and v.Name == "PageButton" then
 							TS:Create(v, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
@@ -472,7 +509,6 @@ function library:CreateWindow(table)
 						v.Visible = false
 					end
 				end
-
 				Page.Visible = true
 			end)
 
@@ -481,14 +517,13 @@ function library:CreateWindow(table)
 			function pagebuttons:CreateButton(name, callback)
 				name = name or "Button"
 				callback = callback or function() end
-				local UpdateButton = {}
 				local Button = Instance.new("Frame")
 				local Footer = Instance.new("Frame")
 				local UICorner_6 = Instance.new("UICorner")
 				local Container = Instance.new("Frame")
 				local UICorner_7 = Instance.new("UICorner")
 				local ButtonIcon = Instance.new("ImageLabel")
-				local ButtonText = Instance.new("TextButton")
+				local TextButton = Instance.new("TextButton")
 				local OutlineShadow = Instance.new("ImageLabel")
 
 				Button.Name = "Button"
@@ -526,30 +561,19 @@ function library:CreateWindow(table)
 				ButtonIcon.Image = "rbxassetid://10045906628"
 				ButtonIcon.ImageColor3 = Color3.fromRGB(135, 255, 135)
 
-				ButtonText.Parent = Container
-				ButtonText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ButtonText.BackgroundTransparency = 1.000
-				ButtonText.Position = UDim2.new(0, 30, 0, 0)
-				ButtonText.Size = UDim2.new(1, -30, 1, 0)
-				ButtonText.Font = Enum.Font.SourceSans
-				ButtonText.Text = name
-				ButtonText.TextColor3 = Color3.fromRGB(255, 255, 255)
-				ButtonText.TextStrokeColor3 = Color3.fromRGB(14, 197, 26)
-				ButtonText.TextSize = 14.000
-				ButtonText.TextWrapped = true
-				ButtonText.TextXAlignment = Enum.TextXAlignment.Left
-				ButtonText.MouseButton1Down:Connect(function()
+				TextButton.Parent = Container
+				TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextButton.BackgroundTransparency = 1.000
+				TextButton.Position = UDim2.new(0, 30, 0, 0)
+				TextButton.Size = UDim2.new(1, -30, 1, 0)
+				TextButton.Font = Enum.Font.SourceSans
+				TextButton.Text = name
+				TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+				TextButton.TextSize = 14.000
+				TextButton.TextWrapped = true
+				TextButton.TextXAlignment = Enum.TextXAlignment.Left
+				TextButton.MouseButton1Down:Connect(function()
 					callback()
-				end)
-				ButtonText.MouseButton1Down:Connect(function()
-					game:GetService("TweenService"):Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
-						TextStrokeTransparency = 0.83
-					}):Play()
-				end)
-				ButtonText.MouseButton1Up:Connect(function()
-					game:GetService("TweenService"):Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
-						TextStrokeTransparency = 1
-					}):Play()
 				end)
 
 				OutlineShadow.Name = "Outline Shadow"
@@ -564,15 +588,10 @@ function library:CreateWindow(table)
 				OutlineShadow.ImageTransparency = 0.700
 				OutlineShadow.ScaleType = Enum.ScaleType.Slice
 				OutlineShadow.SliceCenter = Rect.new(17, 17, 283, 283)
-				function UpdateButton:UpdateButton(name)
-					ButtonText.Text = name
-				end
-				return UpdateButton
 			end
 
 			function pagebuttons:CreateLabel(name)
 				name = name or "Label"
-				local UpdateLabel2 = {}
 				local Label = Instance.new("Frame")
 				local UICorner_16 = Instance.new("UICorner")
 				local _4pxShadow2px = Instance.new("ImageLabel")
@@ -612,10 +631,6 @@ function library:CreateWindow(table)
 				LabelContent.Text = name
 				LabelContent.TextSize = 12.000
 				LabelContent.TextXAlignment = Enum.TextXAlignment.Left
-				function UpdateLabel2:UpdateLabel(name)
-					LabelContent.Text = name
-				end
-				return UpdateLabel2
 			end
 
 			function pagebuttons:CreateSlider(name,min,max,callback)
@@ -727,7 +742,7 @@ function library:CreateWindow(table)
 					local value = math.floor(( ((pos.X.Scale * max) / max) * (max - min) + min ) * 100) / 100
 					ValueText.Text = tostring(value)
 					library4["Value"] = value
-					spawn(function() callback(value) wait() ValueText.Text = math.round(value) end)
+					spawn(function() callback(value) wait() ValueText.Text = value end)
 				end;
 
 				Sliderbutton.InputBegan:Connect(function(input)
@@ -758,11 +773,9 @@ function library:CreateWindow(table)
 				return library4	
 			end
 
-			function pagebuttons:CreateBox(name, icon, callback)
+			function pagebuttons:CreateBox(name, callback)
 				name = name or "Input Text Here..."
-				icon = icon or 10045753138
 				callback = callback or function() end
-				local UpdateBox = {}
 				local TextBox = Instance.new("Frame")
 				local Footer_3 = Instance.new("Frame")
 				local UICorner_21 = Instance.new("UICorner")
@@ -814,6 +827,7 @@ function library:CreateWindow(table)
 
 				TextInput.FocusLost:Connect(function()
 					callback(TextInput.Text)
+					TextInput.Text = ""
 				end)
 
 
@@ -823,18 +837,11 @@ function library:CreateWindow(table)
 				EditIcon.BackgroundTransparency = 1.000
 				EditIcon.Position = UDim2.new(0, 6, 0, 6)
 				EditIcon.Size = UDim2.new(0, 18, 0, 18)
-				EditIcon.Image = "rbxassetid://"..icon
+				EditIcon.Image = "rbxassetid://10045753138"
 				EditIcon.ImageColor3 = Color3.fromRGB(135, 255, 135)
-				function UpdateBox:UpdateBox(name)
-					TextInput.PlaceholderText = name
-				end
-				return UpdateBox
 			end
 
 			function pagebuttons:CreateBind(name, callback)
-				local name = name or "Keybind"
-				local callback = callback or function() end
-				local UpdateBind = {}
 				local Keybind = Instance.new("Frame")
 				local Footer_2 = Instance.new("Frame")
 				local UICorner_13 = Instance.new("UICorner")
@@ -917,48 +924,42 @@ function library:CreateWindow(table)
 						keybindtoggle = false
 					end
 				end)
-				function UpdateBind:UpdateBind(name)
-					Title_3.Text = name
-				end
-				return UpdateBind
 			end
 
 			function pagebuttons:CreateToggle(title , desc, callback)
 				title = title or "Title"
 				desc = desc or "Description"
 				callback = callback or function() end
-				local UpdateToggle = {}
 				local Toggle = Instance.new("Frame")
-				local UICorner = Instance.new("UICorner")
-				local ToggleTitle = Instance.new("TextLabel")
+				local UICorner_9 = Instance.new("UICorner")
+				local Title_2 = Instance.new("TextLabel")
 				local Description = Instance.new("TextLabel")
-				local Indicator = Instance.new("Frame")
-				local UIStroke = Instance.new("UIStroke")
+				local Indicator_2 = Instance.new("Frame")
 				local Dot = Instance.new("Frame")
-				local UICorner_2 = Instance.new("UICorner")
-				local UICorner_3 = Instance.new("UICorner")
+				local UICorner_10 = Instance.new("UICorner")
+				local UICorner_11 = Instance.new("UICorner")
 				local TButton = Instance.new("TextButton")
-				local UICorner_4 = Instance.new("UICorner")
+				local UICorner_12 = Instance.new("UICorner")
 
 				Toggle.Name = "Toggle"
 				Toggle.Parent = SectionContainer
 				Toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
 				Toggle.Size = UDim2.new(1, 0, 0, 40)
 
-				UICorner.CornerRadius = UDim.new(0, 4)
-				UICorner.Parent = Toggle
+				UICorner_9.CornerRadius = UDim.new(0, 4)
+				UICorner_9.Parent = Toggle
 
-				ToggleTitle.Name = "Title"
-				ToggleTitle.Parent = Toggle
-				ToggleTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ToggleTitle.BackgroundTransparency = 1.000
-				ToggleTitle.Position = UDim2.new(0, 7, 0, 1)
-				ToggleTitle.Size = UDim2.new(1, -7, 0.5, 0)
-				ToggleTitle.Font = Enum.Font.GothamBlack
-				ToggleTitle.Text = title
-				ToggleTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-				ToggleTitle.TextSize = 12.000
-				ToggleTitle.TextXAlignment = Enum.TextXAlignment.Left
+				Title_2.Name = "Title"
+				Title_2.Parent = Toggle
+				Title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Title_2.BackgroundTransparency = 1.000
+				Title_2.Position = UDim2.new(0, 7, 0, 1)
+				Title_2.Size = UDim2.new(1, -7, 0.5, 0)
+				Title_2.Font = Enum.Font.GothamBlack
+				Title_2.Text = title
+				Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+				Title_2.TextSize = 12.000
+				Title_2.TextXAlignment = Enum.TextXAlignment.Left
 
 				Description.Name = "Description"
 				Description.Parent = Toggle
@@ -972,33 +973,24 @@ function library:CreateWindow(table)
 				Description.TextSize = 12.000
 				Description.TextXAlignment = Enum.TextXAlignment.Left
 
-				Indicator.Name = "Indicator"
-				Indicator.Parent = Toggle
-				Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Indicator.BackgroundTransparency = 1.000
-				Indicator.Position = UDim2.new(1, -29, 0, 11)
-				Indicator.Size = UDim2.new(0, 18, 0, 18)
-
-				UIStroke.Name = "UIStroke"
-				UIStroke.Parent = Indicator
-				UIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
-				UIStroke.Color = Color3.fromRGB(135, 255, 135)
-				UIStroke.LineJoinMode = Enum.LineJoinMode.Round
-				UIStroke.Thickness = 2
-				UIStroke.Transparency = 0
-
+				Indicator_2.Name = "Indicator"
+				Indicator_2.Parent = Toggle
+				Indicator_2.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
+				Indicator_2.BackgroundTransparency = 0
+				Indicator_2.Position = UDim2.new(1, -29, 0, 11)
+				Indicator_2.Size = UDim2.new(0, 18, 0, 18)
 				Dot.Name = "Dot"
-				Dot.Parent = Indicator
-				Dot.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
-				Dot.BackgroundTransparency = 1.000
+				Dot.Parent = Indicator_2
+				Dot.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+				Dot.BackgroundTransparency = 0
 				Dot.Position = UDim2.new(0, 2, 0, 2)
 				Dot.Size = UDim2.new(1, -4, 1, -4)
 
-				UICorner_2.CornerRadius = UDim.new(0.5, 0)
-				UICorner_2.Parent = Dot
+				UICorner_10.CornerRadius = UDim.new(0.5, 0)
+				UICorner_10.Parent = Dot
 
-				UICorner_3.CornerRadius = UDim.new(0.5, 0)
-				UICorner_3.Parent = Indicator
+				UICorner_11.CornerRadius = UDim.new(0.5, 0)
+				UICorner_11.Parent = Indicator_2
 
 				TButton.Name = "TButton"
 				TButton.Parent = Toggle
@@ -1010,94 +1002,22 @@ function library:CreateWindow(table)
 				TButton.Text = ""
 				TButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 				TButton.TextSize = 14.000
+				TButton.ZIndex = 1
 
-				UICorner_4.CornerRadius = UDim.new(0.5, 0)
-				UICorner_4.Parent = TButton
+				UICorner_12.CornerRadius = UDim.new(0.5, 0)
+				UICorner_12.Parent = TButton
 
 				TButton.MouseButton1Click:Connect(function()
 					if not f then
 						f = true
-						game:GetService("TweenService"):Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=0}):Play()
+						TS:Create(Dot,TweenInfo.new(.1),{BackgroundColor3= Color3.fromRGB(135, 255, 135)}):Play()
 						callback(true)
 					else
 						f = false
-						game:GetService("TweenService"):Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
+						TS:Create(Dot,TweenInfo.new(.1),{BackgroundColor3= Color3.fromRGB(40, 40, 48)}):Play()
 						callback(false)
 					end
 				end)
-				function UpdateToggle:UpdateToggle(title, desc)
-					ToggleTitle.Text = title
-					Description.Text = desc
-				end
-				return UpdateToggle
-			end
-
-			function Notification(name, desc, duration)
-				local Notificaiton = Instance.new("Frame")
-				local UICorner = Instance.new("UICorner")
-				local Title = Instance.new("TextLabel")
-				local Frame = Instance.new("Frame")
-				local UICorner_2 = Instance.new("UICorner")
-				local Description = Instance.new("TextLabel")
-
-				Notificaiton.Name = "Notificaiton"
-				Notificaiton.Parent = MyGui
-				Notificaiton.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
-				Notificaiton.Position = UDim2.new(0.999461949, 0, 0.858750105, 0)
-				Notificaiton.Size = UDim2.new(0.158000007, 0, 0.0960000008, 30)
-
-				UICorner.CornerRadius = UDim.new(0, 4)
-				UICorner.Parent = Notificaiton
-
-				Title.Name = "Title"
-				Title.Parent = Notificaiton
-				Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Title.BackgroundTransparency = 1.000
-				Title.Size = UDim2.new(1.02812195, -7, 0.242990658, 0)
-				Title.Font = Enum.Font.GothamBlack
-				Title.Text = name
-				Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-				Title.TextSize = 14.000
-
-				Frame.Parent = Notificaiton
-				Frame.BackgroundColor3 = Color3.fromRGB(135, 255, 135)
-				Frame.BorderColor3 = Color3.fromRGB(135, 255, 135)
-				Frame.Position = UDim2.new(0, 0, 0.242990658, 0)
-				Frame.Size = UDim2.new(0, 204, 0, 0)
-
-				UICorner_2.CornerRadius = UDim.new(0, 4)
-				UICorner_2.Parent = Frame
-
-				Description.Name = "Description"
-				Description.Parent = Notificaiton
-				Description.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Description.BackgroundTransparency = 1.000
-				Description.Position = UDim2.new(0.0241043475, 0, 0.299065411, 0)
-				Description.Size = UDim2.new(0, 236, 0, 69)
-				Description.Font = Enum.Font.GothamBlack
-				Description.Text = desc
-				Description.TextColor3 = Color3.fromRGB(255, 255, 255)
-				Description.TextSize = 13.000
-				Description.TextXAlignment = Enum.TextXAlignment.Left
-				Description.TextYAlignment = Enum.TextYAlignment.Top
-
-				local Thing5 = Notificaiton.Position
-				game:GetService("TweenService"):Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
-					Position = UDim2.new(
-						0.838, 0, 0.859, 0
-					)
-				}):Play()
-				wait(duration)
-				game:GetService("TweenService"):Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
-					Position = UDim2.new(
-						Thing5.X.Scale,
-						Thing5.X.Offset / 6,
-						Thing5.Y.Scale,
-						Thing5.Y.Offset
-					)
-				}):Play()
-				wait(1)
-				Notificaiton:Remove()
 			end
 
 			return pagebuttons
