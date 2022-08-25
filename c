@@ -385,6 +385,15 @@ function library:CreateWindow(table)
 								if string.find(item, search) then
 									v.Visible = true
 								else
+	                           game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Linear),{
+                               		Position = UDim2.new(
+                               			v.Position.X.Scale * 10,
+                               			v.Position.X.Offset,
+                            			v.Position.Y.Scale,
+                               			v.Position.Y.Offset
+                                	)
+                                }):Play()
+								    wait(1)
 									v.Visible = false
 								end
 							elseif v.Name == "Label" then
@@ -802,7 +811,11 @@ function library:CreateWindow(table)
 
 			function pagebuttons:CreateBox(name, icon, callback)
 				name = name or "Input Text Here..."
-				icon = icon or 10045753138
+				if icon == "Default" then
+				    icon = 10045753138
+				else
+				    icon = icon
+				end
 				callback = callback or function() end
 				local UpdateBox = {}
 				local TextBox = Instance.new("Frame")
