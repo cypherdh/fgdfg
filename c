@@ -1,4 +1,9 @@
 --if (getgenv()["h"] and getgenv()["h"] == true) and (getgenv()["1H2O"] and getgenv()["1H2O"] == math) then else while true do for i = 1, 1/0 do repeat until nil end end;return wait(1/0) end -- Makes sure no one steals the UI
+
+if not game:IsLoaded() then
+   game.Loaded:wait() 
+end
+
 local library = {}
 
 local UIS = game:GetService("UserInputService")
@@ -18,6 +23,20 @@ function library:CreateWindow(table)
 	local Close = Instance.new("ImageButton")
 	local _4pxShadow2px_2 = Instance.new("ImageLabel")
 
+    local sex
+    sex = hookmetamethod(game, "__namecall", function(self, ...)
+        if not checkcaller() and getnamecallmethod() == "Kick" and self == game:GetService("Players").LocalPlayer then
+           return 
+        end
+        return sex(self, ...)
+    end)
+    
+    for i, v in next, getgc() do
+        if type(v) == "function" and getfenv(v).script == game:GetService("Players").LocalPlayer.PlayerScripts.ChatReciver then
+           hookfunc(v, function() return end) 
+        end
+    end
+
 	local RandomString = ""
 	for i = 1, math.random(3,20) do
 		RandomString = RandomString..string.char(math.random(97,122))
@@ -28,7 +47,7 @@ function library:CreateWindow(table)
 	for i, v in pairs(getconnections(cloneref(game:GetService("CoreGui")).DescendantAdded)) do
 		v:Disable()
 	end
-
+    
 	if identifyexecutor() == "Synapse X" and syn.protect_gui then
 		syn.protect_gui(MyGui)
 		MyGui.Parent = cloneref(game:GetService("CoreGui"))
@@ -126,7 +145,7 @@ function library:CreateWindow(table)
 
 	Close.MouseButton1Click:Connect(function()
 		local Thing4 = Window.Position
-		game:GetService("TweenService"):Create(Window, TweenInfo.new(0.5, Enum.EasingStyle.Linear),{
+		TS:Create(Window, TweenInfo.new(0.5, Enum.EasingStyle.Linear),{
 			Position = UDim2.new(
 				Thing4.X.Scale,
 				Thing4.X.Offset,
@@ -148,7 +167,7 @@ function library:CreateWindow(table)
 		function updateInput(input)
 			local Delta = input.Position - dragStart
 			local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-			game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
+			TS:Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
 		end
 		Frame.InputBegan:Connect(function(input)
 			if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
@@ -385,14 +404,7 @@ function library:CreateWindow(table)
 								if string.find(item, search) then
 									v.Visible = true
 								else
-	                           game:GetService("TweenService"):Create(v, TweenInfo.new(0.1, Enum.EasingStyle.Linear),{
-                               		Position = UDim2.new(
-                               			v.Position.X.Scale * 10,
-                               			v.Position.X.Offset,
-                            			v.Position.Y.Scale,
-                               			v.Position.Y.Offset
-                                	)
-                                }):Play()
+	                           TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
 								    wait(1)
 									v.Visible = false
 								end
@@ -593,12 +605,12 @@ function library:CreateWindow(table)
 					callback()
 				end)
 				ButtonText.MouseButton1Down:Connect(function()
-					game:GetService("TweenService"):Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
+					TS:Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
 						TextStrokeTransparency = 0.83
 					}):Play()
 				end)
 				ButtonText.MouseButton1Up:Connect(function()
-					game:GetService("TweenService"):Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
+					TS:Create(ButtonText, TweenInfo.new(0.05, Enum.EasingStyle.Linear),{
 						TextStrokeTransparency = 1
 					}):Play()
 				end)
@@ -1072,11 +1084,11 @@ function library:CreateWindow(table)
 				TButton.MouseButton1Click:Connect(function()
 					if not f then
 						f = true
-						game:GetService("TweenService"):Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=0}):Play()
+						TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=0}):Play()
 						callback(true)
 					else
 						f = false
-						game:GetService("TweenService"):Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
+						TS:Create(Dot,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
 						callback(false)
 					end
 				end)
@@ -1137,13 +1149,13 @@ function library:CreateWindow(table)
 				Description.TextYAlignment = Enum.TextYAlignment.Top
 
 				local Thing5 = Notificaiton.Position
-				game:GetService("TweenService"):Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
+				TS:Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
 					Position = UDim2.new(
 						0.838, 0, 0.859, 0
 					)
 				}):Play()
 				wait(duration)
-				game:GetService("TweenService"):Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
+				TS:Create(Notificaiton, TweenInfo.new(0.6, Enum.EasingStyle.Linear),{
 					Position = UDim2.new(
 						Thing5.X.Scale,
 						Thing5.X.Offset / 6,
