@@ -390,8 +390,6 @@ function library:CreateWindow(table)
 								if string.find(item, search) then
 									v.Visible = true
 								else
-	                           TS:Create(v,TweenInfo.new(.1),{BackgroundTransparency=1}):Play()
-								    wait(1)
 									v.Visible = false
 								end
 							elseif v.Name == "Label" then
