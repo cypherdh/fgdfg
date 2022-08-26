@@ -23,20 +23,6 @@ function library:CreateWindow(table)
 	local Close = Instance.new("ImageButton")
 	local _4pxShadow2px_2 = Instance.new("ImageLabel")
 
-    local sex
-    sex = hookmetamethod(game, "__namecall", function(self, ...)
-        if not checkcaller() and getnamecallmethod() == "Kick" and self == game:GetService("Players").LocalPlayer then
-           return 
-        end
-        return sex(self, ...)
-    end)
-    
-    for i, v in next, getgc() do
-        if type(v) == "function" and getfenv(v).script == game:GetService("Players").LocalPlayer.PlayerScripts.ChatReciver then
-           hookfunc(v, function() return end) 
-        end
-    end
-
 	local RandomString = ""
 	for i = 1, math.random(3,20) do
 		RandomString = RandomString..string.char(math.random(97,122))
